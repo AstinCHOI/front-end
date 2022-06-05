@@ -11,12 +11,16 @@
    * var app = express();
    * app.use(helpers.errorHandler);
    * */
-
+  var newrelic = require('newrelic');
   helpers.errorHandler = function(err, req, res, next) {
     var ret = {
       message: err.message,
       error:   err
     };
+
+    // send error directly to NewRelic
+	  newrelic.noticeError(err);
+    
     res.
       status(err.status || 500).
       send(ret);
